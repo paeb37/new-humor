@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import { createImage, updateImage, deleteImage } from './actions'
+import { Plus, Pencil, Trash2, Search, Globe, Star } from 'lucide-react'
 
 type Image = {
   id: string
@@ -28,7 +29,6 @@ export default function ImageManager({ images }: { images: Image[] }) {
 
   return (
     <div>
-      {/* Toolbar */}
       <div
         style={{
           display: 'flex',
@@ -37,38 +37,43 @@ export default function ImageManager({ images }: { images: Image[] }) {
           alignItems: 'center',
         }}
       >
-        <input
-          type="text"
-          placeholder="Search images..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            flex: 1,
-            background: 'rgba(255, 255, 255, 0.05)',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
-            borderRadius: '8px',
-            padding: '0.75rem 1rem',
-            color: '#fff',
-            fontSize: '0.95rem',
-          }}
-        />
+        <div style={{ flex: 1, position: 'relative' }}>
+          <Search size={18} color="#71717a" style={{ position: 'absolute', left: '0.75rem', top: '50%', transform: 'translateY(-50%)' }} />
+          <input
+            type="text"
+            placeholder="Search images..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            style={{
+              width: '100%',
+              background: 'rgba(255, 255, 255, 0.04)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              borderRadius: '10px',
+              padding: '0.75rem 1rem 0.75rem 2.5rem',
+              color: '#f4f4f5',
+              fontSize: '0.95rem',
+            }}
+          />
+        </div>
         <button
           onClick={() => setShowCreateModal(true)}
           style={{
-            background: '#10b981',
+            background: 'linear-gradient(135deg, #14b8a6, #0d9488)',
             color: '#fff',
             padding: '0.75rem 1.5rem',
-            borderRadius: '8px',
+            borderRadius: '10px',
             border: 'none',
             fontWeight: '600',
             cursor: 'pointer',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '0.5rem',
           }}
         >
-          + Create Image
+          <Plus size={18} /> Create Image
         </button>
       </div>
 
-      {/* Images Grid */}
       <div
         style={{
           display: 'grid',
@@ -80,10 +85,10 @@ export default function ImageManager({ images }: { images: Image[] }) {
           <div
             key={image.id}
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '12px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              borderRadius: '16px',
               overflow: 'hidden',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
             {image.url && (
@@ -109,7 +114,7 @@ export default function ImageManager({ images }: { images: Image[] }) {
               </div>
             )}
             <div style={{ padding: '1rem' }}>
-              <div style={{ color: '#cbd5e1', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
+              <div style={{ color: '#d4d4d8', fontSize: '0.85rem', marginBottom: '0.5rem' }}>
                 {image.image_description || 'No description'}
               </div>
               <div
@@ -123,37 +128,43 @@ export default function ImageManager({ images }: { images: Image[] }) {
                 {image.is_public && (
                   <span
                     style={{
-                      background: '#10b981',
+                      background: '#14b8a6',
                       color: '#fff',
                       padding: '0.25rem 0.5rem',
-                      borderRadius: '4px',
+                      borderRadius: '6px',
                       fontSize: '0.7rem',
                       fontWeight: 'bold',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
                     }}
                   >
-                    PUBLIC
+                    <Globe size={10} /> PUBLIC
                   </span>
                 )}
                 {image.is_common_use && (
                   <span
                     style={{
-                      background: '#f59e0b',
+                      background: '#f97316',
                       color: '#fff',
                       padding: '0.25rem 0.5rem',
-                      borderRadius: '4px',
+                      borderRadius: '6px',
                       fontSize: '0.7rem',
                       fontWeight: 'bold',
+                      display: 'flex',
+                      alignItems: 'center',
+                      gap: '0.25rem',
                     }}
                   >
-                    COMMON USE
+                    <Star size={10} /> COMMON USE
                   </span>
                 )}
                 <span
                   style={{
-                    background: '#3b82f6',
+                    background: '#ec4899',
                     color: '#fff',
                     padding: '0.25rem 0.5rem',
-                    borderRadius: '4px',
+                    borderRadius: '6px',
                     fontSize: '0.7rem',
                     fontWeight: 'bold',
                   }}
@@ -161,8 +172,8 @@ export default function ImageManager({ images }: { images: Image[] }) {
                   {image.captions?.[0]?.count || 0} captions
                 </span>
               </div>
-              <div style={{ color: '#64748b', fontSize: '0.75rem', marginBottom: '0.75rem' }}>
-                by {image.profiles?.email || 'Unknown'} •{' '}
+              <div style={{ color: '#71717a', fontSize: '0.75rem', marginBottom: '0.75rem' }}>
+                by {image.profiles?.email || 'Unknown'} &middot;{' '}
                 {new Date(image.created_datetime_utc).toLocaleDateString('en-US', {
                   year: 'numeric',
                   month: 'short',
@@ -174,17 +185,21 @@ export default function ImageManager({ images }: { images: Image[] }) {
                   onClick={() => setEditingImage(image)}
                   style={{
                     flex: 1,
-                    background: '#3b82f6',
+                    background: '#a855f7',
                     color: '#fff',
                     padding: '0.5rem',
-                    borderRadius: '6px',
+                    borderRadius: '8px',
                     border: 'none',
                     fontSize: '0.85rem',
                     fontWeight: '600',
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.4rem',
                   }}
                 >
-                  Edit
+                  <Pencil size={14} /> Edit
                 </button>
                 <button
                   onClick={async () => {
@@ -194,17 +209,21 @@ export default function ImageManager({ images }: { images: Image[] }) {
                   }}
                   style={{
                     flex: 1,
-                    background: '#ef4444',
+                    background: '#f43f5e',
                     color: '#fff',
                     padding: '0.5rem',
-                    borderRadius: '6px',
+                    borderRadius: '8px',
                     border: 'none',
                     fontSize: '0.85rem',
                     fontWeight: '600',
                     cursor: 'pointer',
+                    display: 'flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    gap: '0.4rem',
                   }}
                 >
-                  Delete
+                  <Trash2 size={14} /> Delete
                 </button>
               </div>
             </div>
@@ -212,7 +231,6 @@ export default function ImageManager({ images }: { images: Image[] }) {
         ))}
       </div>
 
-      {/* Create Modal */}
       {showCreateModal && (
         <ImageModal
           onClose={() => setShowCreateModal(false)}
@@ -223,7 +241,6 @@ export default function ImageManager({ images }: { images: Image[] }) {
         />
       )}
 
-      {/* Edit Modal */}
       {editingImage && (
         <ImageModal
           image={editingImage}
@@ -280,8 +297,8 @@ function ImageModal({
     >
       <div
         style={{
-          background: '#1e293b',
-          borderRadius: '12px',
+          background: '#1a1025',
+          borderRadius: '16px',
           padding: '2rem',
           maxWidth: '500px',
           width: '90%',
@@ -289,12 +306,12 @@ function ImageModal({
         }}
         onClick={(e) => e.stopPropagation()}
       >
-        <h2 style={{ color: '#fff', marginBottom: '1.5rem' }}>
+        <h2 style={{ color: '#f4f4f5', marginBottom: '1.5rem', fontWeight: 700 }}>
           {image ? 'Edit Image' : 'Create Image'}
         </h2>
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '1rem' }}>
-            <label style={{ color: '#94a3b8', fontSize: '0.9rem', display: 'block', marginBottom: '0.5rem' }}>
+            <label style={{ color: '#a1a1aa', fontSize: '0.9rem', display: 'block', marginBottom: '0.5rem' }}>
               Image URL *
             </label>
             <input
@@ -304,16 +321,16 @@ function ImageModal({
               required
               style={{
                 width: '100%',
-                background: 'rgba(255, 255, 255, 0.05)',
+                background: 'rgba(255, 255, 255, 0.04)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '6px',
+                borderRadius: '8px',
                 padding: '0.75rem',
-                color: '#fff',
+                color: '#f4f4f5',
               }}
             />
           </div>
           <div style={{ marginBottom: '1rem' }}>
-            <label style={{ color: '#94a3b8', fontSize: '0.9rem', display: 'block', marginBottom: '0.5rem' }}>
+            <label style={{ color: '#a1a1aa', fontSize: '0.9rem', display: 'block', marginBottom: '0.5rem' }}>
               Description
             </label>
             <textarea
@@ -322,31 +339,31 @@ function ImageModal({
               rows={3}
               style={{
                 width: '100%',
-                background: 'rgba(255, 255, 255, 0.05)',
+                background: 'rgba(255, 255, 255, 0.04)',
                 border: '1px solid rgba(255, 255, 255, 0.1)',
-                borderRadius: '6px',
+                borderRadius: '8px',
                 padding: '0.75rem',
-                color: '#fff',
+                color: '#f4f4f5',
                 resize: 'vertical',
               }}
             />
           </div>
           <div style={{ marginBottom: '1rem', display: 'flex', gap: '1rem' }}>
-            <label style={{ color: '#fff', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <label style={{ color: '#f4f4f5', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
               <input
                 type="checkbox"
                 checked={isPublic}
                 onChange={(e) => setIsPublic(e.target.checked)}
-                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#a855f7' }}
               />
               Public
             </label>
-            <label style={{ color: '#fff', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
+            <label style={{ color: '#f4f4f5', display: 'flex', alignItems: 'center', gap: '0.5rem', cursor: 'pointer' }}>
               <input
                 type="checkbox"
                 checked={isCommonUse}
                 onChange={(e) => setIsCommonUse(e.target.checked)}
-                style={{ width: '18px', height: '18px', cursor: 'pointer' }}
+                style={{ width: '18px', height: '18px', cursor: 'pointer', accentColor: '#a855f7' }}
               />
               Common Use
             </label>
@@ -357,11 +374,11 @@ function ImageModal({
               onClick={onClose}
               style={{
                 flex: 1,
-                background: '#475569',
-                color: '#fff',
+                background: 'rgba(255, 255, 255, 0.08)',
+                color: '#f4f4f5',
                 padding: '0.75rem',
-                borderRadius: '8px',
-                border: 'none',
+                borderRadius: '10px',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
                 fontWeight: '600',
                 cursor: 'pointer',
               }}
@@ -372,10 +389,10 @@ function ImageModal({
               type="submit"
               style={{
                 flex: 1,
-                background: '#10b981',
+                background: 'linear-gradient(135deg, #a855f7, #ec4899)',
                 color: '#fff',
                 padding: '0.75rem',
-                borderRadius: '8px',
+                borderRadius: '10px',
                 border: 'none',
                 fontWeight: '600',
                 cursor: 'pointer',

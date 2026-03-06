@@ -23,7 +23,6 @@ export default async function CaptionsPage({
   const from = (currentPage - 1) * pageSize
   const to = from + pageSize - 1
 
-  // Fetch captions with related data
   const { data: captions, count } = await supabase
     .from('captions')
     .select(
@@ -41,13 +40,12 @@ export default async function CaptionsPage({
   const totalPages = Math.ceil((count || 0) / pageSize)
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0f172a' }}>
-      {/* Header */}
+    <div style={{ minHeight: '100vh', background: '#0d0a1c' }}>
       <header
         style={{
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+          background: 'linear-gradient(135deg, #7c3aed 0%, #db2777 100%)',
           padding: '1.5rem 2rem',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 20px rgba(124, 58, 237, 0.3)',
         }}
       >
         <div
@@ -63,22 +61,21 @@ export default async function CaptionsPage({
             <Link
               href="/"
               style={{
-                color: '#cbd5e1',
+                color: 'rgba(255,255,255,0.7)',
                 textDecoration: 'none',
                 fontSize: '0.9rem',
                 marginBottom: '0.5rem',
                 display: 'block',
               }}
             >
-              ← Back to Dashboard
+              &larr; Back to Dashboard
             </Link>
-            <h1 style={{ color: '#fff', fontSize: '1.8rem' }}>💬 Caption Browser</h1>
+            <h1 style={{ color: '#fff', fontSize: '1.8rem', fontWeight: 700 }}>Caption Browser</h1>
           </div>
         </div>
       </header>
 
       <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
-        {/* Stats */}
         <div
           style={{
             display: 'grid',
@@ -89,46 +86,45 @@ export default async function CaptionsPage({
         >
           <div
             style={{
-              background: 'rgba(16, 185, 129, 0.1)',
-              border: '1px solid rgba(16, 185, 129, 0.3)',
-              borderRadius: '8px',
+              background: 'rgba(20, 184, 166, 0.1)',
+              border: '1px solid rgba(20, 184, 166, 0.3)',
+              borderRadius: '12px',
               padding: '1rem',
             }}
           >
-            <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>Total Captions</div>
-            <div style={{ color: '#fff', fontSize: '2rem', fontWeight: 'bold' }}>
+            <div style={{ color: '#a1a1aa', fontSize: '0.85rem' }}>Total Captions</div>
+            <div style={{ color: '#f4f4f5', fontSize: '2rem', fontWeight: 'bold' }}>
               {count?.toLocaleString() || 0}
             </div>
           </div>
           <div
             style={{
-              background: 'rgba(59, 130, 246, 0.1)',
-              border: '1px solid rgba(59, 130, 246, 0.3)',
-              borderRadius: '8px',
+              background: 'rgba(168, 85, 247, 0.1)',
+              border: '1px solid rgba(168, 85, 247, 0.3)',
+              borderRadius: '12px',
               padding: '1rem',
             }}
           >
-            <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>Public Captions</div>
-            <div style={{ color: '#fff', fontSize: '2rem', fontWeight: 'bold' }}>
+            <div style={{ color: '#a1a1aa', fontSize: '0.85rem' }}>Public Captions</div>
+            <div style={{ color: '#f4f4f5', fontSize: '2rem', fontWeight: 'bold' }}>
               {captions?.filter((c) => c.is_public).length || 0}
             </div>
           </div>
           <div
             style={{
-              background: 'rgba(245, 158, 11, 0.1)',
-              border: '1px solid rgba(245, 158, 11, 0.3)',
-              borderRadius: '8px',
+              background: 'rgba(234, 179, 8, 0.1)',
+              border: '1px solid rgba(234, 179, 8, 0.3)',
+              borderRadius: '12px',
               padding: '1rem',
             }}
           >
-            <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>Featured Captions</div>
-            <div style={{ color: '#fff', fontSize: '2rem', fontWeight: 'bold' }}>
+            <div style={{ color: '#a1a1aa', fontSize: '0.85rem' }}>Featured Captions</div>
+            <div style={{ color: '#f4f4f5', fontSize: '2rem', fontWeight: 'bold' }}>
               {captions?.filter((c) => c.is_featured).length || 0}
             </div>
           </div>
         </div>
 
-        {/* Captions Grid */}
         <div
           style={{
             display: 'grid',
@@ -141,10 +137,10 @@ export default async function CaptionsPage({
             <div
               key={caption.id}
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                borderRadius: '12px',
+                background: 'rgba(255, 255, 255, 0.04)',
+                borderRadius: '16px',
                 overflow: 'hidden',
-                border: '1px solid rgba(255, 255, 255, 0.1)',
+                border: '1px solid rgba(255, 255, 255, 0.08)',
               }}
             >
               {caption.images?.url && (
@@ -172,13 +168,13 @@ export default async function CaptionsPage({
               <div style={{ padding: '1.25rem' }}>
                 <p
                   style={{
-                    color: '#fff',
+                    color: '#f4f4f5',
                     fontSize: '1rem',
                     lineHeight: 1.6,
                     marginBottom: '1rem',
                   }}
                 >
-                  "{caption.content}"
+                  &ldquo;{caption.content}&rdquo;
                 </p>
                 <div
                   style={{
@@ -191,10 +187,10 @@ export default async function CaptionsPage({
                   {caption.is_public && (
                     <span
                       style={{
-                        background: '#10b981',
+                        background: '#14b8a6',
                         color: '#fff',
                         padding: '0.25rem 0.5rem',
-                        borderRadius: '4px',
+                        borderRadius: '6px',
                         fontSize: '0.7rem',
                         fontWeight: 'bold',
                       }}
@@ -205,23 +201,23 @@ export default async function CaptionsPage({
                   {caption.is_featured && (
                     <span
                       style={{
-                        background: '#f59e0b',
+                        background: '#eab308',
                         color: '#fff',
                         padding: '0.25rem 0.5rem',
-                        borderRadius: '4px',
+                        borderRadius: '6px',
                         fontSize: '0.7rem',
                         fontWeight: 'bold',
                       }}
                     >
-                      ⭐ FEATURED
+                      FEATURED
                     </span>
                   )}
                   <span
                     style={{
-                      background: '#3b82f6',
+                      background: '#ec4899',
                       color: '#fff',
                       padding: '0.25rem 0.5rem',
-                      borderRadius: '4px',
+                      borderRadius: '6px',
                       fontSize: '0.7rem',
                       fontWeight: 'bold',
                     }}
@@ -229,8 +225,8 @@ export default async function CaptionsPage({
                     {caption.caption_votes?.[0]?.count || 0} votes
                   </span>
                 </div>
-                <div style={{ color: '#64748b', fontSize: '0.8rem' }}>
-                  by {caption.profiles?.email || 'Unknown'} •{' '}
+                <div style={{ color: '#71717a', fontSize: '0.8rem' }}>
+                  by {caption.profiles?.email || 'Unknown'} &middot;{' '}
                   {new Date(caption.created_datetime_utc).toLocaleDateString('en-US', {
                     year: 'numeric',
                     month: 'short',
@@ -242,7 +238,6 @@ export default async function CaptionsPage({
           ))}
         </div>
 
-        {/* Pagination */}
         {totalPages > 1 && (
           <div
             style={{
@@ -256,33 +251,33 @@ export default async function CaptionsPage({
               <Link
                 href={`/admin/captions?page=${currentPage - 1}`}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: '#fff',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  color: '#f4f4f5',
                   padding: '0.75rem 1.25rem',
-                  borderRadius: '8px',
+                  borderRadius: '10px',
                   textDecoration: 'none',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                 }}
               >
-                ← Previous
+                &larr; Previous
               </Link>
             )}
-            <span style={{ color: '#94a3b8', padding: '0 1rem' }}>
+            <span style={{ color: '#a1a1aa', padding: '0 1rem' }}>
               Page {currentPage} of {totalPages}
             </span>
             {currentPage < totalPages && (
               <Link
                 href={`/admin/captions?page=${currentPage + 1}`}
                 style={{
-                  background: 'rgba(255, 255, 255, 0.05)',
-                  color: '#fff',
+                  background: 'rgba(255, 255, 255, 0.04)',
+                  color: '#f4f4f5',
                   padding: '0.75rem 1.25rem',
-                  borderRadius: '8px',
+                  borderRadius: '10px',
                   textDecoration: 'none',
-                  border: '1px solid rgba(255, 255, 255, 0.1)',
+                  border: '1px solid rgba(255, 255, 255, 0.08)',
                 }}
               >
-                Next →
+                Next &rarr;
               </Link>
             )}
           </div>

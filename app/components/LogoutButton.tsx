@@ -2,6 +2,7 @@
 
 import { createClient } from '../lib/supabase/client'
 import { useRouter } from 'next/navigation'
+import { LogOut } from 'lucide-react'
 
 export default function LogoutButton() {
   const router = useRouter()
@@ -20,12 +21,15 @@ export default function LogoutButton() {
         background: 'rgba(255, 255, 255, 0.1)',
         color: '#fff',
         padding: '0.625rem 1.25rem',
-        borderRadius: '8px',
+        borderRadius: '10px',
         border: '1px solid rgba(255, 255, 255, 0.2)',
         fontSize: '0.9rem',
         fontWeight: '600',
         cursor: 'pointer',
         transition: 'all 0.2s',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.5rem',
       }}
       onMouseOver={(e) => {
         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)'
@@ -34,7 +38,7 @@ export default function LogoutButton() {
         e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)'
       }}
     >
-      Sign Out
+      <LogOut size={16} /> Sign Out
     </button>
   )
 }

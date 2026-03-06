@@ -2,11 +2,11 @@ import { createClient } from './lib/supabase/server'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
 import LogoutButton from './components/LogoutButton'
+import { Users, ImageIcon, MessageSquare, BarChart3, ThumbsUp, ThumbsDown, Clock, Activity } from 'lucide-react'
 
 export default async function AdminDashboard() {
   const supabase = await createClient()
 
-  // Get current user
   const {
     data: { user },
   } = await supabase.auth.getUser()
@@ -15,7 +15,6 @@ export default async function AdminDashboard() {
     redirect('/login')
   }
 
-  // Fetch all statistics
   const [
     { count: totalUsers },
     { count: totalImages },
@@ -26,33 +25,24 @@ export default async function AdminDashboard() {
     { count: upvotesCount },
     { count: downvotesCount },
   ] = await Promise.all([
-    // Total counts (head: true = no data, just count)
     supabase.from('profiles').select('*', { count: 'exact', head: true }),
     supabase.from('images').select('*', { count: 'exact', head: true }),
     supabase.from('captions').select('*', { count: 'exact', head: true }),
     supabase.from('caption_votes').select('*', { count: 'exact', head: true }),
-
-    // Recent users (last 10 signups)
     supabase
       .from('profiles')
       .select('id, email, created_datetime_utc, is_superadmin, is_in_study')
       .order('created_datetime_utc', { ascending: false })
       .limit(10),
-
-    // Recent activity (last 10 captions)
     supabase
       .from('captions')
       .select('id, content, created_datetime_utc, profiles(email), images(url)')
       .order('created_datetime_utc', { ascending: false })
       .limit(10),
-
-    // Upvotes count (just count, no data)
     supabase
       .from('caption_votes')
       .select('*', { count: 'exact', head: true })
       .eq('vote_value', 1),
-
-    // Downvotes count (just count, no data)
     supabase
       .from('caption_votes')
       .select('*', { count: 'exact', head: true })
@@ -63,13 +53,12 @@ export default async function AdminDashboard() {
   const downvotes = downvotesCount || 0
 
   return (
-    <div style={{ minHeight: '100vh', background: '#0f172a' }}>
-      {/* Header */}
+    <div style={{ minHeight: '100vh', background: '#0d0a1c' }}>
       <header
         style={{
-          background: 'linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%)',
+          background: 'linear-gradient(135deg, #7c3aed 0%, #db2777 100%)',
           padding: '1.5rem 2rem',
-          boxShadow: '0 4px 6px rgba(0, 0, 0, 0.1)',
+          boxShadow: '0 4px 20px rgba(124, 58, 237, 0.3)',
         }}
       >
         <div
@@ -82,10 +71,10 @@ export default async function AdminDashboard() {
           }}
         >
           <div>
-            <h1 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '0.25rem' }}>
-              🎭 Admin Dashboard
+            <h1 style={{ color: '#fff', fontSize: '1.8rem', marginBottom: '0.25rem', fontWeight: 700 }}>
+              Caption Control Center
             </h1>
-            <p style={{ color: '#cbd5e1', fontSize: '0.9rem' }}>
+            <p style={{ color: 'rgba(255,255,255,0.7)', fontSize: '0.9rem' }}>
               Logged in as {user.email}
             </p>
           </div>
@@ -94,7 +83,6 @@ export default async function AdminDashboard() {
       </header>
 
       <main style={{ maxWidth: '1400px', margin: '0 auto', padding: '2rem' }}>
-        {/* Quick Stats */}
         <div
           style={{
             display: 'grid',
@@ -104,32 +92,31 @@ export default async function AdminDashboard() {
           }}
         >
           <StatCard
-            icon="👥"
+            icon={<Users size={28} />}
             title="Total Users"
             value={totalUsers || 0}
-            color="#3b82f6"
+            color="#a855f7"
           />
           <StatCard
-            icon="🖼️"
+            icon={<ImageIcon size={28} />}
             title="Total Images"
             value={totalImages || 0}
-            color="#8b5cf6"
+            color="#ec4899"
           />
           <StatCard
-            icon="💬"
+            icon={<MessageSquare size={28} />}
             title="Total Captions"
             value={totalCaptions || 0}
-            color="#10b981"
+            color="#14b8a6"
           />
           <StatCard
-            icon="🗳️"
+            icon={<BarChart3 size={28} />}
             title="Total Votes"
             value={totalVotes || 0}
-            color="#f59e0b"
+            color="#f97316"
           />
         </div>
 
-        {/* Navigation Cards */}
         <div
           style={{
             display: 'grid',
@@ -140,28 +127,27 @@ export default async function AdminDashboard() {
         >
           <NavCard
             href="/admin/users"
-            icon="👥"
+            icon={<Users size={32} />}
             title="Manage Users"
-            description="View and manage user profiles"
-            color="#3b82f6"
+            description="View user profiles and activity"
+            color="#a855f7"
           />
           <NavCard
             href="/admin/images"
-            icon="🖼️"
+            icon={<ImageIcon size={32} />}
             title="Manage Images"
-            description="Create, read, update, and delete images"
-            color="#8b5cf6"
+            description="Create, edit, and delete images"
+            color="#ec4899"
           />
           <NavCard
             href="/admin/captions"
-            icon="💬"
+            icon={<MessageSquare size={32} />}
             title="View Captions"
             description="Browse all captions in the system"
-            color="#10b981"
+            color="#14b8a6"
           />
         </div>
 
-        {/* Two Column Layout */}
         <div
           style={{
             display: 'grid',
@@ -170,66 +156,66 @@ export default async function AdminDashboard() {
             marginBottom: '2rem',
           }}
         >
-          {/* Vote Distribution */}
           <div
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '12px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              borderRadius: '16px',
               padding: '1.5rem',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
-            <h2 style={{ color: '#fff', marginBottom: '1rem', fontSize: '1.3rem' }}>
-              📊 Vote Distribution
+            <h2 style={{ color: '#f4f4f5', marginBottom: '1rem', fontSize: '1.3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <BarChart3 size={22} color="#a855f7" /> Vote Distribution
             </h2>
             <div style={{ display: 'flex', gap: '1rem' }}>
               <div style={{ flex: 1 }}>
                 <div
                   style={{
-                    background: '#10b981',
+                    background: 'linear-gradient(135deg, #14b8a6, #0d9488)',
                     padding: '1rem',
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     textAlign: 'center',
                   }}
                 >
+                  <ThumbsUp size={24} color="#fff" style={{ marginBottom: '0.25rem' }} />
                   <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>
                     {upvotes}
                   </div>
-                  <div style={{ color: '#fff', fontSize: '0.9rem' }}>Upvotes</div>
+                  <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem' }}>Upvotes</div>
                 </div>
               </div>
               <div style={{ flex: 1 }}>
                 <div
                   style={{
-                    background: '#ef4444',
+                    background: 'linear-gradient(135deg, #f43f5e, #e11d48)',
                     padding: '1rem',
-                    borderRadius: '8px',
+                    borderRadius: '12px',
                     textAlign: 'center',
                   }}
                 >
+                  <ThumbsDown size={24} color="#fff" style={{ marginBottom: '0.25rem' }} />
                   <div style={{ fontSize: '2rem', fontWeight: 'bold', color: '#fff' }}>
                     {downvotes}
                   </div>
-                  <div style={{ color: '#fff', fontSize: '0.9rem' }}>Downvotes</div>
+                  <div style={{ color: 'rgba(255,255,255,0.8)', fontSize: '0.9rem' }}>Downvotes</div>
                 </div>
               </div>
             </div>
-            <div style={{ marginTop: '1rem', color: '#94a3b8', fontSize: '0.85rem' }}>
+            <div style={{ marginTop: '1rem', color: '#a1a1aa', fontSize: '0.85rem' }}>
               Total engagement: {upvotes + downvotes} votes
             </div>
           </div>
 
-          {/* Recent Users */}
           <div
             style={{
-              background: 'rgba(255, 255, 255, 0.05)',
-              borderRadius: '12px',
+              background: 'rgba(255, 255, 255, 0.04)',
+              borderRadius: '16px',
               padding: '1.5rem',
-              border: '1px solid rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
             }}
           >
-            <h2 style={{ color: '#fff', marginBottom: '1rem', fontSize: '1.3rem' }}>
-              🆕 Recent Signups
+            <h2 style={{ color: '#f4f4f5', marginBottom: '1rem', fontSize: '1.3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+              <Clock size={22} color="#ec4899" /> Recent Signups
             </h2>
             <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
               {recentUsers?.slice(0, 10).map((user: any) => (
@@ -241,14 +227,14 @@ export default async function AdminDashboard() {
                     alignItems: 'center',
                     padding: '0.75rem',
                     background: 'rgba(255, 255, 255, 0.03)',
-                    borderRadius: '6px',
+                    borderRadius: '10px',
                   }}
                 >
                   <div style={{ flex: 1 }}>
-                    <div style={{ color: '#fff', fontSize: '0.9rem' }}>
+                    <div style={{ color: '#f4f4f5', fontSize: '0.9rem' }}>
                       {user.email}
                     </div>
-                    <div style={{ color: '#64748b', fontSize: '0.75rem', marginTop: '0.25rem' }}>
+                    <div style={{ color: '#71717a', fontSize: '0.75rem', marginTop: '0.25rem' }}>
                       {new Date(user.created_datetime_utc).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
@@ -260,10 +246,10 @@ export default async function AdminDashboard() {
                     {user.is_superadmin && (
                       <span
                         style={{
-                          background: '#3b82f6',
+                          background: '#a855f7',
                           color: '#fff',
                           padding: '0.25rem 0.5rem',
-                          borderRadius: '4px',
+                          borderRadius: '6px',
                           fontSize: '0.7rem',
                           fontWeight: 'bold',
                         }}
@@ -274,10 +260,10 @@ export default async function AdminDashboard() {
                     {user.is_in_study && (
                       <span
                         style={{
-                          background: '#10b981',
+                          background: '#14b8a6',
                           color: '#fff',
                           padding: '0.25rem 0.5rem',
-                          borderRadius: '4px',
+                          borderRadius: '6px',
                           fontSize: '0.7rem',
                           fontWeight: 'bold',
                         }}
@@ -292,17 +278,16 @@ export default async function AdminDashboard() {
           </div>
         </div>
 
-        {/* Recent Activity */}
         <div
           style={{
-            background: 'rgba(255, 255, 255, 0.05)',
-            borderRadius: '12px',
+            background: 'rgba(255, 255, 255, 0.04)',
+            borderRadius: '16px',
             padding: '1.5rem',
-            border: '1px solid rgba(255, 255, 255, 0.1)',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
           }}
         >
-          <h2 style={{ color: '#fff', marginBottom: '1rem', fontSize: '1.3rem' }}>
-            ⚡ Recent Activity
+          <h2 style={{ color: '#f4f4f5', marginBottom: '1rem', fontSize: '1.3rem', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+            <Activity size={22} color="#f97316" /> Recent Activity
           </h2>
           <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
             {recentActivity?.map((caption: any) => (
@@ -313,7 +298,7 @@ export default async function AdminDashboard() {
                   gap: '1rem',
                   padding: '1rem',
                   background: 'rgba(255, 255, 255, 0.03)',
-                  borderRadius: '8px',
+                  borderRadius: '12px',
                   alignItems: 'center',
                 }}
               >
@@ -324,17 +309,17 @@ export default async function AdminDashboard() {
                     style={{
                       width: '60px',
                       height: '60px',
-                      borderRadius: '6px',
+                      borderRadius: '10px',
                       objectFit: 'cover',
                     }}
                   />
                 )}
                 <div style={{ flex: 1 }}>
-                  <div style={{ color: '#fff', marginBottom: '0.25rem' }}>
-                    "{caption.content}"
+                  <div style={{ color: '#f4f4f5', marginBottom: '0.25rem' }}>
+                    &ldquo;{caption.content}&rdquo;
                   </div>
-                  <div style={{ color: '#94a3b8', fontSize: '0.85rem' }}>
-                    by {caption.profiles?.email} •{' '}
+                  <div style={{ color: '#a1a1aa', fontSize: '0.85rem' }}>
+                    by {caption.profiles?.email} &middot;{' '}
                     {new Date(caption.created_datetime_utc).toLocaleString('en-US', {
                       year: 'numeric',
                       month: 'short',
@@ -359,7 +344,7 @@ function StatCard({
   value,
   color,
 }: {
-  icon: string
+  icon: React.ReactNode
   title: string
   value: number
   color: string
@@ -367,23 +352,23 @@ function StatCard({
   return (
     <div
       style={{
-        background: 'rgba(255, 255, 255, 0.05)',
-        borderRadius: '12px',
+        background: 'rgba(255, 255, 255, 0.04)',
+        borderRadius: '16px',
         padding: '1.5rem',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
-        transition: 'transform 0.2s',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
+        borderLeft: `4px solid ${color}`,
       }}
     >
       <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'start' }}>
         <div>
-          <div style={{ color: '#94a3b8', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
+          <div style={{ color: '#a1a1aa', fontSize: '0.9rem', marginBottom: '0.5rem' }}>
             {title}
           </div>
-          <div style={{ color: '#fff', fontSize: '2.5rem', fontWeight: 'bold' }}>
+          <div style={{ color: '#f4f4f5', fontSize: '2.5rem', fontWeight: 'bold' }}>
             {value.toLocaleString('en-US')}
           </div>
         </div>
-        <div style={{ fontSize: '2.5rem' }}>{icon}</div>
+        <div style={{ color }}>{icon}</div>
       </div>
     </div>
   )
@@ -397,7 +382,7 @@ function NavCard({
   color,
 }: {
   href: string
-  icon: string
+  icon: React.ReactNode
   title: string
   description: string
   color: string
@@ -406,18 +391,18 @@ function NavCard({
     <Link
       href={href}
       style={{
-        background: 'rgba(255, 255, 255, 0.05)',
-        borderRadius: '12px',
+        background: 'rgba(255, 255, 255, 0.04)',
+        borderRadius: '16px',
         padding: '1.5rem',
-        border: '1px solid rgba(255, 255, 255, 0.1)',
+        border: '1px solid rgba(255, 255, 255, 0.08)',
         textDecoration: 'none',
-        transition: 'all 0.2s',
         display: 'block',
+        borderLeft: `4px solid ${color}`,
       }}
     >
-      <div style={{ fontSize: '2.5rem', marginBottom: '0.75rem' }}>{icon}</div>
-      <h3 style={{ color: '#fff', fontSize: '1.3rem', marginBottom: '0.5rem' }}>{title}</h3>
-      <p style={{ color: '#94a3b8', fontSize: '0.9rem', lineHeight: 1.5 }}>{description}</p>
+      <div style={{ color, marginBottom: '0.75rem' }}>{icon}</div>
+      <h3 style={{ color: '#f4f4f5', fontSize: '1.3rem', marginBottom: '0.5rem' }}>{title}</h3>
+      <p style={{ color: '#a1a1aa', fontSize: '0.9rem', lineHeight: 1.5 }}>{description}</p>
     </Link>
   )
 }
