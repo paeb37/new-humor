@@ -17,60 +17,65 @@ export default function UnauthorizedPage() {
     <main
       style={{
         minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         background: 'linear-gradient(135deg, #9f1239 0%, #0d0a1c 100%)',
+        paddingTop: '15vh',
       }}
     >
       <div
         style={{
-          background: 'rgba(255, 255, 255, 0.06)',
-          backdropFilter: 'blur(10px)',
-          padding: '3rem',
-          borderRadius: '20px',
-          textAlign: 'center',
-          maxWidth: '500px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 8px 32px rgba(159, 18, 57, 0.2)',
+          maxWidth: '700px',
+          margin: '0 auto',
+          padding: '0 1.5rem',
         }}
       >
-        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-          <ShieldX size={56} color="#f43f5e" />
-        </div>
-        <h1 style={{ color: '#f4f4f5', marginBottom: '1rem', fontSize: '2rem', fontWeight: 700 }}>
-          Access Denied
-        </h1>
-        <p style={{ color: '#d4d4d8', marginBottom: '2rem', lineHeight: 1.6 }}>
-          You need superadmin privileges to access the Caption Control Center.
-        </p>
-        <p style={{ color: '#a1a1aa', marginBottom: '2rem', fontSize: '0.9rem' }}>
-          If you believe this is an error, please contact an administrator to
-          grant you superadmin access.
-        </p>
-        <button
-          onClick={handleLogout}
+        <div
           style={{
-            background: 'linear-gradient(135deg, #f43f5e, #e11d48)',
-            color: '#fff',
-            padding: '0.875rem 2rem',
-            borderRadius: '12px',
-            border: 'none',
-            fontSize: '1rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            width: '100%',
-            transition: 'all 0.2s',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)'
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)'
+            background: 'rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(10px)',
+            padding: '1rem 1.5rem',
+            borderRadius: '8px',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderTopColor: '#f43f5e',
+            borderTopWidth: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.25rem',
           }}
         >
-          Sign Out
-        </button>
+          <ShieldX size={24} color="#f43f5e" style={{ flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <h1 style={{ color: '#f4f4f5', fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.15rem' }}>
+              Access Denied
+            </h1>
+            <p style={{ color: '#a1a1aa', fontSize: '0.8rem' }}>
+              You need superadmin privileges to access this panel
+            </p>
+          </div>
+          <button
+            onClick={handleLogout}
+            style={{
+              background: 'linear-gradient(135deg, #f43f5e, #e11d48)',
+              color: '#fff',
+              padding: '0.6rem 1.5rem',
+              borderRadius: '6px',
+              border: 'none',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              transition: 'all 0.2s',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
+          >
+            Sign Out
+          </button>
+        </div>
       </div>
     </main>
   )

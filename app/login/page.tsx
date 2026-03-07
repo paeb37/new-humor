@@ -23,62 +23,66 @@ export default function LoginPage() {
     <main
       style={{
         minHeight: '100vh',
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
         background: 'linear-gradient(135deg, #7c3aed 0%, #0d0a1c 100%)',
+        paddingTop: '15vh',
       }}
     >
       <div
         style={{
-          background: 'rgba(255, 255, 255, 0.06)',
-          backdropFilter: 'blur(10px)',
-          padding: '3rem',
-          borderRadius: '20px',
-          textAlign: 'center',
-          maxWidth: '400px',
-          border: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '0 8px 32px rgba(124, 58, 237, 0.2)',
+          maxWidth: '700px',
+          margin: '0 auto',
+          padding: '0 1.5rem',
         }}
       >
-        <div style={{ marginBottom: '1rem', display: 'flex', justifyContent: 'center' }}>
-          <Lock size={48} color="#a855f7" />
-        </div>
-        <h1 style={{ color: '#f4f4f5', marginBottom: '0.5rem', fontSize: '1.8rem', fontWeight: 700 }}>
-          Caption Control Center
-        </h1>
-        <p style={{ color: '#a1a1aa', marginBottom: '2rem', fontSize: '0.9rem' }}>
-          Superadmin access required
-        </p>
-        <button
-          onClick={handleGoogleLogin}
+        <div
           style={{
-            background: 'linear-gradient(135deg, #a855f7, #ec4899)',
-            color: '#fff',
-            padding: '0.875rem 2rem',
-            borderRadius: '12px',
-            border: 'none',
-            fontSize: '1rem',
-            fontWeight: '600',
-            cursor: 'pointer',
-            width: '100%',
-            transition: 'all 0.2s',
-            boxShadow: '0 4px 16px rgba(168, 85, 247, 0.4)',
-          }}
-          onMouseOver={(e) => {
-            e.currentTarget.style.transform = 'translateY(-2px)'
-            e.currentTarget.style.boxShadow = '0 6px 24px rgba(168, 85, 247, 0.5)'
-          }}
-          onMouseOut={(e) => {
-            e.currentTarget.style.transform = 'translateY(0)'
-            e.currentTarget.style.boxShadow = '0 4px 16px rgba(168, 85, 247, 0.4)'
+            background: 'rgba(255, 255, 255, 0.06)',
+            backdropFilter: 'blur(10px)',
+            padding: '1rem 1.5rem',
+            borderRadius: '8px',
+            borderTop: '4px solid #a855f7',
+            border: '1px solid rgba(255, 255, 255, 0.08)',
+            borderTopColor: '#a855f7',
+            borderTopWidth: '4px',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '1.25rem',
           }}
         >
-          Sign in with Google
-        </button>
-        <p style={{ color: '#71717a', marginTop: '1.5rem', fontSize: '0.85rem' }}>
-          Only superadmin users can access this panel
-        </p>
+          <Lock size={24} color="#a855f7" style={{ flexShrink: 0 }} />
+          <div style={{ flex: 1 }}>
+            <h1 style={{ color: '#f4f4f5', fontSize: '1.1rem', fontWeight: 700, marginBottom: '0.15rem' }}>
+              Caption Control Center
+            </h1>
+            <p style={{ color: '#a1a1aa', fontSize: '0.8rem' }}>
+              Superadmin access required
+            </p>
+          </div>
+          <button
+            onClick={handleGoogleLogin}
+            style={{
+              background: 'linear-gradient(135deg, #a855f7, #ec4899)',
+              color: '#fff',
+              padding: '0.6rem 1.5rem',
+              borderRadius: '6px',
+              border: 'none',
+              fontSize: '0.85rem',
+              fontWeight: '600',
+              cursor: 'pointer',
+              whiteSpace: 'nowrap',
+              flexShrink: 0,
+              transition: 'all 0.2s',
+            }}
+            onMouseOver={(e) => {
+              e.currentTarget.style.transform = 'translateY(-1px)'
+            }}
+            onMouseOut={(e) => {
+              e.currentTarget.style.transform = 'translateY(0)'
+            }}
+          >
+            Sign in with Google
+          </button>
+        </div>
       </div>
     </main>
   )
