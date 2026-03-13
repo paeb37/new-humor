@@ -204,7 +204,10 @@ export default function ImageManager({ images }: { images: Image[] }) {
                 <button
                   onClick={async () => {
                     if (confirm('Are you sure you want to delete this image?')) {
-                      await deleteImage(image.id)
+                      const result = await deleteImage(image.id)
+                      if (result.error) {
+                        alert(result.error)
+                      }
                     }
                   }}
                   style={{
@@ -235,8 +238,12 @@ export default function ImageManager({ images }: { images: Image[] }) {
         <ImageModal
           onClose={() => setShowCreateModal(false)}
           onSubmit={async (formData) => {
-            await createImage(formData)
-            setShowCreateModal(false)
+            const result = await createImage(formData)
+            if (result.success) {
+              setShowCreateModal(false)
+            } else if (result.error) {
+              alert(result.error)
+            }
           }}
         />
       )}
@@ -246,8 +253,12 @@ export default function ImageManager({ images }: { images: Image[] }) {
           image={editingImage}
           onClose={() => setEditingImage(null)}
           onSubmit={async (formData) => {
-            await updateImage(editingImage.id, formData)
-            setEditingImage(null)
+            const result = await updateImage(editingImage.id, formData)
+            if (result.success) {
+              setEditingImage(null)
+            } else if (result.error) {
+              alert(result.error)
+            }
           }}
         />
       )}
@@ -268,14 +279,26 @@ function ImageModal({
   const [description, setDescription] = useState(image?.image_description || '')
   const [isPublic, setIsPublic] = useState(image?.is_public ?? false)
   const [isCommonUse, setIsCommonUse] = useState(image?.is_common_use ?? false)
+  const [imageFile, setImageFile] = useState<File | null>(null)
+  const [error, setError] = useState('')
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+
+    if (!url.trim() && !imageFile && !image?.url) {
+      setError('Provide an image URL or upload a file.')
+      return
+    }
+
+    setError('')
     const formData = new FormData()
-    formData.append('url', url)
+    formData.append('url', url.trim())
     formData.append('description', description)
     formData.append('is_public', isPublic.toString())
     formData.append('is_common_use', isCommonUse.toString())
+    if (imageFile) {
+      formData.append('image_file', imageFile)
+    }
     await onSubmit(formData)
   }
 
@@ -312,13 +335,39 @@ function ImageModal({
         <form onSubmit={handleSubmit}>
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ color: '#a1a1aa', fontSize: '0.9rem', display: 'block', marginBottom: '0.5rem' }}>
-              Image URL *
+              Upload Image
+            </label>
+            <input
+              type="file"
+              accept="image/*"
+              onChange={(e) => {
+                const nextFile = e.target.files?.[0] || null
+                setImageFile(nextFile)
+                if (nextFile) {
+                  setError('')
+                }
+              }}
+              style={{
+                width: '100%',
+                background: 'rgba(255, 255, 255, 0.04)',
+                border: '1px solid rgba(255, 255, 255, 0.1)',
+                borderRadius: '8px',
+                padding: '0.75rem',
+                color: '#f4f4f5',
+              }}
+            />
+            <div style={{ color: '#71717a', fontSize: '0.75rem', marginTop: '0.5rem' }}>
+              Upload a file for Supabase Storage, or paste a URL below.
+            </div>
+          </div>
+          <div style={{ marginBottom: '1rem' }}>
+            <label style={{ color: '#a1a1aa', fontSize: '0.9rem', display: 'block', marginBottom: '0.5rem' }}>
+              Image URL
             </label>
             <input
               type="url"
               value={url}
               onChange={(e) => setUrl(e.target.value)}
-              required
               style={{
                 width: '100%',
                 background: 'rgba(255, 255, 255, 0.04)',
@@ -329,6 +378,11 @@ function ImageModal({
               }}
             />
           </div>
+          {error && (
+            <div style={{ color: '#fb7185', fontSize: '0.85rem', marginBottom: '1rem' }}>
+              {error}
+            </div>
+          )}
           <div style={{ marginBottom: '1rem' }}>
             <label style={{ color: '#a1a1aa', fontSize: '0.9rem', display: 'block', marginBottom: '0.5rem' }}>
               Description

@@ -63,6 +63,17 @@ export default async function AdminDashboard() {
     { href: '/admin/users', icon: <Users size={16} />, label: 'Manage Users', color: '#a855f7' },
     { href: '/admin/images', icon: <ImageIcon size={16} />, label: 'Manage Images', color: '#ec4899' },
     { href: '/admin/captions', icon: <MessageSquare size={16} />, label: 'View Captions', color: '#14b8a6' },
+    { href: '/admin/caption-requests', icon: <MessageSquare size={16} />, label: 'Caption Requests', color: '#22d3ee' },
+    { href: '/admin/caption-examples', icon: <MessageSquare size={16} />, label: 'Caption Examples', color: '#f97316' },
+    { href: '/admin/humor-flavors', icon: <BarChart3 size={16} />, label: 'Humor Flavors', color: '#eab308' },
+    { href: '/admin/humor-mix', icon: <BarChart3 size={16} />, label: 'Humor Mix', color: '#10b981' },
+    { href: '/admin/terms', icon: <MessageSquare size={16} />, label: 'Terms', color: '#fb7185' },
+    { href: '/admin/llm-models', icon: <Activity size={16} />, label: 'LLM Models', color: '#818cf8' },
+    { href: '/admin/llm-providers', icon: <Activity size={16} />, label: 'LLM Providers', color: '#c084fc' },
+    { href: '/admin/llm-prompt-chains', icon: <Activity size={16} />, label: 'Prompt Chains', color: '#38bdf8' },
+    { href: '/admin/llm-model-responses', icon: <Activity size={16} />, label: 'LLM Responses', color: '#f59e0b' },
+    { href: '/admin/allowed-domains', icon: <Users size={16} />, label: 'Allowed Domains', color: '#22d3ee' },
+    { href: '/admin/whitelist-emails', icon: <Users size={16} />, label: 'Whitelisted Emails', color: '#06b6d4' },
   ]
 
   return (
@@ -100,7 +111,7 @@ export default async function AdminDashboard() {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: '200px 1fr 220px',
+            gridTemplateColumns: '200px 1fr 260px',
             gap: '1.5rem',
             alignItems: 'start',
           }}
