@@ -28,8 +28,8 @@ export default async function CaptionsPage({
     .select(
       `
       *,
-      profiles(email),
-      images(url, image_description),
+      profiles!profile_id(email),
+      images!image_id(url, image_description),
       caption_votes(count)
     `,
       { count: 'exact' }

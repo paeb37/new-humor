@@ -18,7 +18,7 @@ export default async function ImagesPage() {
     .from('images')
     .select(`
       *,
-      profiles(email),
+      profiles!profile_id(email),
       captions(id)
     `)
     .order('created_datetime_utc', { ascending: false })

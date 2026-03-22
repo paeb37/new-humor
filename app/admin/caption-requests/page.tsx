@@ -29,8 +29,8 @@ export default async function CaptionRequestsPage({
     .select(
       `
       *,
-      profiles(email),
-      images(url, image_description)
+      profiles!profile_id(email),
+      images!image_id(url, image_description)
     `,
       { count: 'exact' }
     )

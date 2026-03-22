@@ -36,7 +36,7 @@ export default async function AdminDashboard() {
       .limit(10),
     supabase
       .from('captions')
-      .select('id, content, created_datetime_utc, profiles(email), images(url)')
+      .select('id, content, created_datetime_utc, profiles!profile_id(email), images!image_id(url)')
       .order('created_datetime_utc', { ascending: false })
       .limit(10),
     supabase
