@@ -27,6 +27,8 @@ export async function createCaptionExample(formData: FormData) {
     explanation,
     priority,
     image_id,
+    created_by_user_id: user.id,
+    modified_by_user_id: user.id,
   })
 
   if (error) {
@@ -63,7 +65,7 @@ export async function updateCaptionExample(id: number, formData: FormData) {
       explanation,
       priority,
       image_id,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: user.id,
     })
     .eq('id', id)
 

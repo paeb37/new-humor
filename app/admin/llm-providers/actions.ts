@@ -16,7 +16,11 @@ export async function createProvider(formData: FormData) {
 
   const name = formData.get('name') as string
 
-  const { error } = await supabase.from('llm_providers').insert({ name })
+  const { error } = await supabase.from('llm_providers').insert({
+    name,
+    created_by_user_id: user.id,
+    modified_by_user_id: user.id,
+  })
 
   if (error) {
     return { error: error.message }
@@ -43,7 +47,7 @@ export async function updateProvider(id: number, formData: FormData) {
     .from('llm_providers')
     .update({
       name,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: user.id,
     })
     .eq('id', id)
 

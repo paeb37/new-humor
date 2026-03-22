@@ -24,6 +24,8 @@ export async function createModel(formData: FormData) {
     llm_provider_id,
     provider_model_id,
     is_temperature_supported,
+    created_by_user_id: user.id,
+    modified_by_user_id: user.id,
   })
 
   if (error) {
@@ -57,7 +59,7 @@ export async function updateModel(id: number, formData: FormData) {
       llm_provider_id,
       provider_model_id,
       is_temperature_supported,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: user.id,
     })
     .eq('id', id)
 

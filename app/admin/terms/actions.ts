@@ -31,6 +31,8 @@ export async function createTerm(formData: FormData) {
     example,
     priority,
     term_type_id,
+    created_by_user_id: user.id,
+    modified_by_user_id: user.id,
   })
 
   if (error) {
@@ -71,7 +73,7 @@ export async function updateTerm(id: number, formData: FormData) {
       example,
       priority,
       term_type_id,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: user.id,
     })
     .eq('id', id)
 

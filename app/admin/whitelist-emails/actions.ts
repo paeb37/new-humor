@@ -18,7 +18,11 @@ export async function createWhitelistEmail(formData: FormData) {
 
   const { error } = await supabase
     .from('whitelist_email_addresses')
-    .insert({ email_address })
+    .insert({
+      email_address,
+      created_by_user_id: user.id,
+      modified_by_user_id: user.id,
+    })
 
   if (error) {
     return { error: error.message }
@@ -45,7 +49,7 @@ export async function updateWhitelistEmail(id: number, formData: FormData) {
     .from('whitelist_email_addresses')
     .update({
       email_address,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: user.id,
     })
     .eq('id', id)
 

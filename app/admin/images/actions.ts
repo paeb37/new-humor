@@ -73,6 +73,8 @@ export async function createImage(formData: FormData) {
       is_public: isPublic,
       is_common_use: isCommonUse,
       profile_id: user.id,
+      created_by_user_id: user.id,
+      modified_by_user_id: user.id,
     })
     .select()
     .single()
@@ -122,7 +124,7 @@ export async function updateImage(imageId: string, formData: FormData) {
       image_description: description,
       is_public: isPublic,
       is_common_use: isCommonUse,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: user.id,
     })
     .eq('id', imageId)
     .select()

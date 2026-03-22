@@ -16,7 +16,11 @@ export async function createDomain(formData: FormData) {
 
   const apex_domain = formData.get('apex_domain') as string
 
-  const { error } = await supabase.from('allowed_signup_domains').insert({ apex_domain })
+  const { error } = await supabase.from('allowed_signup_domains').insert({
+    apex_domain,
+    created_by_user_id: user.id,
+    modified_by_user_id: user.id,
+  })
 
   if (error) {
     return { error: error.message }
@@ -43,7 +47,7 @@ export async function updateDomain(id: number, formData: FormData) {
     .from('allowed_signup_domains')
     .update({
       apex_domain,
-      modified_datetime_utc: new Date().toISOString(),
+      modified_by_user_id: user.id,
     })
     .eq('id', id)
 
